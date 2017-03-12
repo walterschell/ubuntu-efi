@@ -1,3 +1,9 @@
 test-cert.der
 test-cert.pem
 test-key.rsa
+grubx64.efi
+test-cert.der
+test-cert.der.siglist
+test-cert.der.siglist.db.signed
+test-cert.der.siglist.KEK.signed
+test-cert.der.siglist.PK.signed

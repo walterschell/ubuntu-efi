@@ -14,4 +14,4 @@ sudo cp *.PK.signed /etc/secureboot/keys/PK/
 sudo cp *.KEK.signed /etc/secureboot/keys/KEK/
 sudo cp *.db.signed /etc/secureboot/keys/db/
 sudo sbkeysync --verbose --pk --dry-run
-sudo sbkeysync
+sudo sbkeysync --pk

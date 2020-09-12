@@ -17,10 +17,12 @@ keys: PK.auth KEK.auth db.auth
 GUID.txt: MSGUID.txt
 	#uuidgen --random > GUID.txt
 	cp MSGUID.txt GUID.txt
+/boot/efi/efi/ubuntu/shimx64.efi.bak:
+	sudo cp /boot/efi/efi/ubuntu/shimx64.efi /boot/efi/efi/ubuntu/shimx64.efi.bak
 
 signed-shim: shimx64-signed.efi
-shimx64-signed.efi: KEK.crt KEK.key binaries
-	sudo sbsign --key KEK.key --cert KEK.crt --output shimx64-signed.efi /boot/efi/efi/ubuntu/shimx64.efi
+shimx64-signed.efi: db.crt db.key binaries /boot/efi/efi/ubuntu/shimx64.efi.bak
+	sudo sbsign --key db.key --cert db.crt --output shimx64-signed.efi /boot/efi/efi/ubuntu/shimx64.efi.bak
 
 	
 

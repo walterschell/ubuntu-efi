@@ -10,8 +10,9 @@ install-keys: keys binaries
 	sudo ./efitools-1.9.2/efi-updatevar -f KEK.auth -g `cat GUID.txt` KEK
 	sudo ./efitools-1.9.2/efi-updatevar -f db.auth -g `cat GUID.txt` db
 
-install-shim: signed-shim
+install-shim: signed-shim signed-mokmgr
 	sudo cp shimx64-signed.efi /boot/efi/efi/ubuntu/shimx64.efi
+	sudo cp mmx64-signed.efi /boot/efi/efi/ubuntu/mmx64.efi
 
 keys: PK.auth KEK.auth db.auth
 GUID.txt: MSGUID.txt
@@ -20,11 +21,19 @@ GUID.txt: MSGUID.txt
 /boot/efi/efi/ubuntu/shimx64.efi.bak:
 	sudo cp /boot/efi/efi/ubuntu/shimx64.efi /boot/efi/efi/ubuntu/shimx64.efi.bak
 
+/boot/efi/efi/ubuntu/mmx64.efi.bak:
+	sudo cp /boot/efi/efi/ubuntu/mmx64.efi /boot/efi/efi/ubuntu/mmx64.efi.bak
+
+
+
 signed-shim: shimx64-signed.efi
 shimx64-signed.efi: db.crt db.key binaries /boot/efi/efi/ubuntu/shimx64.efi.bak
 	sudo sbsign --key db.key --cert db.crt --output shimx64-signed.efi /boot/efi/efi/ubuntu/shimx64.efi.bak
 
-	
+
+signed-mokmgr: mmx64-signed.efi
+mmx64-signed.efi: db.crt db.key binaries /boot/efi/efi/ubuntu/mmx64.efi.bak
+	sudo sbsign --key db.key --cert db.crt --output mmx64-signed.efi /boot/efi/efi/ubuntu/mmx64.efi.bak
 
 
 PK.crt:

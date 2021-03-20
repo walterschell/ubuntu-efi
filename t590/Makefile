@@ -2,7 +2,7 @@
 all: keys signed-shim
 clean:
 	rm -f PK.crt PK.cer PK.esl PK.auth KEK.crt KEK.cer KEK.esl KED.auth db.crt db.cer db.esl db.auth
-	rm -f KEK.auth KEK.key PK.key db.key shimx64-signed.efi
+	rm -f KEK.auth KEK.key PK.key db.key shimx64-signed.efi mmx64-signed.efi 
 
 install: install-shim install-keys
 install-keys: keys binaries

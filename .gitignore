@@ -7,3 +7,17 @@ test-cert.der.siglist
 test-cert.der.siglist.db.signed
 test-cert.der.siglist.KEK.signed
 test-cert.der.siglist.PK.signed
+t590/db.auth
+t590/db.crt
+t590/db.esl
+t590/db.key
+t590/KEK.auth
+t590/KEK.crt
+t590/KEK.esl
+t590/KEK.key
+t590/mmx64-signed.efi
+t590/PK.auth
+t590/PK.crt
+t590/PK.esl
+t590/PK.key
+t590/shimx64-signed.efi

@@ -6,9 +6,9 @@ clean:
 
 install: install-shim install-keys
 install-keys: keys binaries
-	sudo ./efitools-1.9.2/efi-updatevar -f PK.auth -g `cat GUID.txt` PK
-	sudo ./efitools-1.9.2/efi-updatevar -f KEK.auth -g `cat GUID.txt` KEK
-	sudo ./efitools-1.9.2/efi-updatevar -f db.auth -g `cat GUID.txt` db
+	sudo efi-updatevar -f PK.auth -g `cat GUID.txt` PK
+	sudo efi-updatevar -f KEK.auth -g `cat GUID.txt` KEK
+	sudo efi-updatevar -f db.auth -g `cat GUID.txt` db
 
 install-shim: signed-shim signed-mokmgr
 	sudo cp shimx64-signed.efi /boot/efi/efi/ubuntu/shimx64.efi
@@ -43,19 +43,19 @@ PK.cer: PK.crt
 	openssl x509 -outform DER -in PK.crt -out PK.cer
 
 PK.esl: PK.crt GUID.txt binaries
-	./efitools-1.9.2/cert-to-efi-sig-list -g "$(< GUID.txt)" PK.crt PK.esl
+	cert-to-efi-sig-list -g "$(< GUID.txt)" PK.crt PK.esl
 
 PK.auth: PK.crt PK.esl GUID.txt binaries
-	./efitools-1.9.2/sign-efi-sig-list -g "$(< GUID.txt)" -k PK.key -c PK.crt PK PK.esl PK.auth
+	sign-efi-sig-list -g "$(< GUID.txt)" -k PK.key -c PK.crt PK PK.esl PK.auth
 
 KEK.crt:
 	openssl req -newkey rsa:2048 -nodes -keyout KEK.key -new -x509 -sha256 -days 3650 -subj "/CN=my Key Exchange Key/" -out KEK.crt
 KEK.cer: KEK.crt
 	openssl x509 -outform DER -in KEK.crt -out KEK.cer
 KEK.esl: KEK.crt GUID.txt binaries
-	./efitools-1.9.2/cert-to-efi-sig-list -g "$(< GUID.txt)" KEK.crt KEK.esl
+	cert-to-efi-sig-list -g "$(< GUID.txt)" KEK.crt KEK.esl
 KEK.auth: GUID.txt PK.crt KEK.esl binaries
-	./efitools-1.9.2/sign-efi-sig-list -g "$(< GUID.txt)" -k PK.key -c PK.crt KEK KEK.esl KEK.auth
+	sign-efi-sig-list -g "$(< GUID.txt)" -k PK.key -c PK.crt KEK KEK.esl KEK.auth
 
 
 db.crt:
@@ -64,8 +64,8 @@ db.crt:
 db.cer: db.crt
 	openssl x509 -outform DER -in db.crt -out db.cer
 db.esl: db.crt GUID.txt binaries
-	./efitools-1.9.2/cert-to-efi-sig-list -g "$(< GUID.txt)" db.crt db.esl
+	cert-to-efi-sig-list -g "$(< GUID.txt)" db.crt db.esl
 db.auth: GUID.txt KEK.crt db.esl binaries
-	./efitools-1.9.2/sign-efi-sig-list -g "$(< GUID.txt)" -k KEK.key -c KEK.crt db db.esl db.auth
+	sign-efi-sig-list -g "$(< GUID.txt)" -k KEK.key -c KEK.crt db db.esl db.auth
 binaries:
 	$(MAKE) -C efitools-1.9.2 sign-efi-sig-list cert-to-efi-sig-list efi-updatevar
